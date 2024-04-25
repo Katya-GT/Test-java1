@@ -1,5 +1,10 @@
 package jm.task.core.jdbc.util;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,4 +25,36 @@ public class Util {
         }
     }
     // реализуйте настройку соеденения с БД
+
+
+private static final SessionFactory sessionFactory = buildSessionfactory();
+
+private static final SessionFactory buildSessionfactory() {
+    try {
+        Configuration configuration = new Configuration();
+
+        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
+
+        configuration.setProperty("hibernate,connection.irl", "jdbc:mysql://localhost:3306/mysql");
+
+        configuration.setProperty("hibernate.connection.password", "west");
+
+        StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
+        registryBuilder.applySettings(configuration.getProperties());
+
+        return configuration.buildSessionFactory(registryBuilder.build());
+    } catch (Throwable ex) {
+
+        System.out.println("Initial SessionFactory creation failed." + ex);
+        throw new ExceptionInInitializerError(ex);
+
+    }
+
+    }
+    public static SessionFactory getSessionFactory() {
+    return sessionFactory;
+    }
+    public static void shutdown() {
+    getSessionFactory().close();
+    }
 }

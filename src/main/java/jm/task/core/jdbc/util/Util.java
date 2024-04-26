@@ -17,7 +17,8 @@ public class Util {
 
     public static Connection getConnection() {
         try {
-            return DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            return
+                    DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Unable to establish a database connection", e);
@@ -35,18 +36,19 @@ private static final SessionFactory buildSessionfactory() {
 
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
 
-        configuration.setProperty("hibernate,connection.irl", "jdbc:mysql://localhost:3306/mysql");
+        configuration.setProperty("hibernate,connection.url", DB_URL);
 
-        configuration.setProperty("hibernate.connection.password", "west");
+        configuration.setProperty("hibernate.connection.userName", DB_USERNAME);
+        configuration.setProperty("hibernate.connection.password", DB_PASSWORD);
 
         StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
         registryBuilder.applySettings(configuration.getProperties());
 
         return configuration.buildSessionFactory(registryBuilder.build());
     } catch (Throwable ex) {
-
         System.out.println("Initial SessionFactory creation failed." + ex);
-        throw new ExceptionInInitializerError(ex);
+        throw new
+                ExceptionInInitializerError(ex);
 
     }
 
